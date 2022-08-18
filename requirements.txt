@@ -1,5 +1,3 @@
 opencv-python
 opencv-contrib-python
 numpy
-imutils
-tornado

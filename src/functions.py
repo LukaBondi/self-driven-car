@@ -52,25 +52,6 @@ def drive(speed = 0, angle = 102, direction = 0):
         GPIO.output(in1, GPIO.HIGH)
         GPIO.output(in2, GPIO.LOW)
 
-def sensorDetect(invert=False):
-    # Sensor inputs
-    sensorL = GPIO.input(sL)    
-    sensorR = GPIO.input(sR) 
-
-    # Sensor logic
-    if not sensorL and not sensorR: # 11
-        if invert:
-            drive(80, 55, 1) # Forward right
-        else:
-            drive(80, 125, 1) # Forward left
-    elif sensorL and not sensorR: # 01
-        drive(80, 125, 1) # Forward left
-    elif not sensorL and sensorR: # 10
-        drive(80, 55, 1) # Forward right
-    else:
-        return False
-    time.sleep(0.1)
-    return True
 
 def turnTimer(times, dArgs=[0, 102, 0]):
     timeS = time.time()

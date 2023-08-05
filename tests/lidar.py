@@ -7,8 +7,8 @@ import time
 PORT_NAME = '/dev/ttyUSB0'
 lidar = RPLidar(PORT_NAME)
 
-dist_data = np.zeros(180, dtype='int16')
-max_dist = 1000
+dist_data = np.zeros(210, dtype='int16')
+max_dist = 1500
 
 try:
     print(lidar.get_info())
@@ -20,30 +20,27 @@ try:
             angle = min([359, floor(angle)]) 
             
 
-            if angle >= 90 and angle < 270: # Filtering out the unnecessary angles 
+            if angle < 75 or angle >= 285: # Filtering out the unnecessary angles 
                 continue
 
             if distance > max_dist: # Filtering out the unnecessary distances
                 continue
-
-            # Modifying the angle range to [-89, 90] (Integers only)
-            if angle >= 270:
-                angle = abs(angle - 360)
-            elif angle < 90:
-                angle *= -1
             
-            # print(f'Angle: {angle}, Dist: {distance}, Y_dist: {y_dist:.2f}')
+            # print(f'Angle: {angle}, Dist: {distance}')
 
             # Fitting the angle range to the range [0, 180) (Integers only)
-            dist_data[angle + 89] = floor(distance)
+            dist_data[angle - 75] = floor(distance)
 
         print(f'{dist_data}\n\n\n\n\n') 
 
         # Resetting the distance values.
-        dist_data = np.zeros(180, dtype='int16')
+        dist_data = np.zeros(210, dtype='int16')
 
 except KeyboardInterrupt:
     print('Stopping.')
+    
+except IndexError:
+    print(angle)
 
 lidar.stop()
 lidar.disconnect()

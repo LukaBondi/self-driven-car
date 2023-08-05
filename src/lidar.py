@@ -29,40 +29,47 @@ class lidar(object):
         time.sleep(1)
 
         self.running = True
+        self.iter_measurements = self.lidar.iter_measurements()
         self.dist_data = np.zeros(210, dtype='int16')
         self.max_dist = maxDist # Default max distance
-
+12546
 
     def poll(self):
-        self.measurements = self.lidar.iter_scans()
-        try:
-            new_scan, quality, angle, distance = next(self.iter_measurements)
+        if self.running:
+            try:
+                new_scan, quality, angle, distance = next(self.iter_measurements)
 
-            # Resetting the distance values
-            if new_scan:
-                self.dist_data = np.zeros(210, dtype='int16')
+                # Resetting the distance values
+                if new_scan:
+                    self.dist_data = np.zeros(210, dtype='int16')
 
-            # Floor the angle, set the limit to 359 then converting it to pi radians
-            angle = min([359, floor(angle)]) 
+                # Floor the angle, set the limit to 359 then converting it to pi radians
+                angle = min([359, floor(angle)]) 
 
-            if angle < 75 or angle >= 285: # Filtering out the unnecessary angles 
-                return
+                if angle < 75 or angle >= 285: # Filtering out the unnecessary angles 
+                    return
 
-            if distance > self.max_dist: # Filtering out the unnecessary distances
-                return
+                if distance > self.max_dist: # Filtering out the unnecessary distances
+                    return
 
-            self.dist_data[angle - 75] = floor(distance)
+                self.dist_data[angle - 75] = floor(distance)
 
-        except:
-            pass
+                print(distance)
+
+            except:
+                print("polling")
+                pass
 
 
     def update(self):
-        start_time = time.time()
+        # start_time = time.time()
         while(self.running):
             self.poll()
             time.sleep(0)
-        print(time.time() - start_time)
+        # print(time.time() - start_time)
+
+    def run(self):
+        return self.dist_data
 
     def shutdown(self):
         self.running = False

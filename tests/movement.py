@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 import time
 
 pigpio_factory = PiGPIOFactory()
-servo =AngularServo(7, min_angle=0, max_angle=270, min_pulse_width=0.0005, max_pulse_width=0.0025, pin_factory=pigpio_factory)
+servo = AngularServo(7, min_angle=0, max_angle=180, min_pulse_width=0.0005, max_pulse_width=0.0025, pin_factory=pigpio_factory)
 
 in1, in2, en = 19, 16, 13
 GPIO.setmode(GPIO.BCM)

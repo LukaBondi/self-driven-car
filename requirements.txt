@@ -5,4 +5,5 @@ numpy
 RPi.GPIO
 pigpio
 
-rplidar
+smbus2
+Adafruit_CircuitPython_RPLIDAR

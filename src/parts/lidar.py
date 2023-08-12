@@ -34,47 +34,40 @@ class lidar(object):
 
 
     def update(self):
-        # while(self.running):
-        #     try:
-        for scan in self.lidar.iter_scans():
-            
-            if not self.running:
-                break
-
-            data_buffer = np.zeros(210, dtype='int16')
-
-            a = 0
-            for (_, angle, distance) in scan:
-                a += 1
-                # Floor the angle, set the limit to 359 then convert it pi radians
-                angle = min([359, floor(angle)]) 
+        try:
+            for scan in self.lidar.iter_scans():
                 
+                if not self.running:
+                    break
 
-                if angle < 75 or angle >= 285: # Filtering out the unnecessary angles 
-                    continue
+                data_buffer = np.zeros(210, dtype='int16')
+                for (_, angle, distance) in scan:
+                    # Floor the angle, set the limit to 359 then convert it pi radians
+                    angle = min([359, floor(angle)]) 
+                    
 
-                if distance > self.max_dist: # Filtering out the unnecessary distances
-                    continue
-                
-                # print(f'Angle: {angle}, Dist: {distance}')
+                    if angle < 75 or angle >= 285: # Filtering out the unnecessary angles 
+                        continue
 
-                # Fitting the angle range to the range [0, 180) (Integers only)
-                data_buffer[angle - 75] = floor(distance)
+                    if distance > self.max_dist: # Filtering out the unnecessary distances
+                        continue
+                    
+                    # print(f'Angle: {angle}, Dist: {distance}')
 
-            print(a)
-            self.dist_data = data_buffer
-            #self.lidar.clear_input()
+                    # Fitting the angle range to the range [0, 180) (Integers only)
+                    data_buffer[angle - 75] = floor(distance)
 
-            # except RPLidarException as error:
-            #     print(f"Error: {error}")
-            #     self.lidar.stop_motor()
-            #     self.lidar.stop()
-            #     self.lidar.disconnect()
-            #     time.sleep(0.5)
-            #     self.lidar = RPLidar(self.port)
-            #     self.lidar.clean_input()
+                self.dist_data = data_buffer
+                #self.lidar.clear_input()
 
-    def run(self):
+        except RPLidarException as error:
+            print(f"Error: {error}")
+            self.lidar.stop_motor()
+            self.dist_data = np.zeros(210, dtype='int16')
+
+
+    # Returns distance data -> angle range: [75, 285]
+    def read(self):
         return self.dist_data
 
     def shutdown(self):

@@ -1,67 +1,26 @@
-from gpiozero.pins.pigpio import PiGPIOFactory
-from gpiozero import AngularServo
-import RPi.GPIO as GPIO
 import numpy as np
-import time
 import cv2
 
-pigpio_factory = PiGPIOFactory()
 
-sL, sR, bt = 22, 23, 11 
-in1, in2, en = 19, 16, 13
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(sL, GPIO.IN) # Sensor left
-GPIO.setup(sR, GPIO.IN) # Sensor right
-GPIO.setup(bt, GPIO.IN, pull_up_down=GPIO.PUD_UP) # button
-GPIO.setup(in1, GPIO.OUT) # In 1
-GPIO.setup(in2, GPIO.OUT) # In 2
-GPIO.setup(en, GPIO.OUT) # En
+class PIDController:
+    def __init__(self, Kp, Ki, Kd):
+        self.Kp = Kp
+        self.Ki = Ki
+        self.Kd = Kd
+        self.prev_error = 0
+        self.integral = 0
 
-motor = GPIO.PWM(en, 1000)
-motor.start(0) 
-servo = AngularServo(8, min_angle=0, max_angle=180, min_pulse_width=0.0005, max_pulse_width=0.0025, pin_factory=pigpio_factory)
+    def compute(self, setpoint, current_value):
+        error = setpoint - current_value
+        self.integral += error
+        derivative = error - self.prev_error
 
-# Lines
-lowerBL = np.array([90,144,30])
-upperBL = np.array([151,255,98])
-lowerOR = np.array([0,8,0])
-upperOR = np.array([31,168,146])
+        output = self.Kp * error + self.Ki * self.integral + self.Kd * derivative
 
-def drive(speed = 0, angle = 102, direction = 0):
-    if speed == 0 or direction == 0: # No movement
-        GPIO.output(in1, GPIO.LOW)
-        GPIO.output(in2, GPIO.LOW)
-        time.sleep(0.5)
+        self.prev_error = error
 
-    if speed > 100:
-        speed = 100
-    elif speed < 0:
-        speed = 0
+        return output
 
-    if angle > 125:
-        angle = 125
-    elif angle < 55:
-        angle = 55
-
-    motor.ChangeDutyCycle(speed)
-    servo.angle = angle
-    if direction > 0: # Forward
-        GPIO.output(in1, GPIO.LOW)
-        GPIO.output(in2, GPIO.HIGH)
-    elif direction < 0: # Backward
-        GPIO.output(in1, GPIO.HIGH)
-        GPIO.output(in2, GPIO.LOW)
-
-
-def turnTimer(times, dArgs=[0, 102, 0]):
-    timeS = time.time()
-    while time.time() - timeS < times:
-        # Turning
-        drive(*dArgs)
-        time.sleep(0.01)
-            
-        #if sensorDetect():
-        #    break
 
 def findContour(mask, setArea=1000, name='something'):
     x, y, w, h = 0, 0, 0, 0
@@ -75,11 +34,3 @@ def findContour(mask, setArea=1000, name='something'):
             break
     
     return x, y, w, h
-
-def getBtState():
-    return GPIO.input(bt)
-
-def shutdown():
-    drive(0, 95, 0) # Forward center
-    time.sleep(0.5)
-    GPIO.cleanup()

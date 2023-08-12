@@ -1,0 +1,51 @@
+class config():
+
+# ~~~~~ GPIO CONFIGURATION ~~~~~ #
+
+    SWITCH_GPIO = 22
+    BUTTON_GPIO = 23
+
+    # Motors #
+    IN1 = 19
+    IN2 = 16
+    EN = 13
+    MOTOR_FREQ = 1000
+
+    # Servos # 
+
+    SERVO_MIN_ANGLE = 0
+    SERVO_MAX_ANGLE = 180
+
+    SERVO_MIN_PULSE_WIDTH = 0.0005
+    SERVO_MAX_PULSE_WIDTH = 0.0025
+
+    # Steering servo #
+    STEERING_GPIO = 7
+    STEERING_LEFT = 50
+    STEERING_MIDDLE = 95
+    STEERING_RIGHT = 130
+
+    # Camera servo #
+    STEERING_GPIO = 8
+    STEERING_LEFT = 0
+    STEERING_MIDLEFT = 45
+    STEERING_MIDDLE = 82
+    STEERING_MIDRIGHT = 130
+    STEERING_RIGHT = 170
+
+# ~~~~~ CAMERA CONFIGURATION ~~~~~ #
+
+    CAMERA_PORT = 0
+    RED_LOWER_BOUND = [0, 0, 0]
+    RED_UPPER_BOUND = [179, 255, 255]
+    GREEN_LOWER_BOUND = [0, 0, 0]
+    GREEN_UPPER_BOUND = [179, 255, 255]
+
+
+# ~~~~~ PID CONFIGURATION ~~~~~ #
+
+    DRIVE_KP = 1
+    DRIVE_KI = 0
+    DRIVE_KD = 0
+
+

@@ -2,8 +2,8 @@ class config():
 
 # ~~~~~ GPIO CONFIGURATION ~~~~~ #
 
-    SWITCH_GPIO = 22
-    BUTTON_GPIO = 23
+    SWITCH_GPIO = 25
+    BUTTON_GPIO = 11
 
     # Motors #
     IN1 = 19
@@ -37,10 +37,10 @@ class config():
 
     CAMERA_PORT = 0
 
-    ORANGE_LOWER_BOUND = [0, 0, 0]
-    ORANGE_UPPER_BOUND = [179, 255, 255]
-    BLUE_LOWER_BOUND = [0, 0, 0]
-    BLUE_UPPER_BOUND = [179, 255, 255]
+    ORANGE_LOWER_BOUND = [0, 12, 38]
+    ORANGE_UPPER_BOUND = [15, 142, 130]
+    BLUE_LOWER_BOUND = [85, 71, 4]
+    BLUE_UPPER_BOUND = [105, 233, 150]
 
     RED_LOWER_BOUND = [0, 0, 0]
     RED_UPPER_BOUND = [179, 255, 255]
@@ -50,8 +50,8 @@ class config():
 
 # ~~~~~ PID CONFIGURATION ~~~~~ #
 
-    DRIVE_KP = 0.4
+    DRIVE_KP = 0.15
     DRIVE_KI = 0
-    DRIVE_KD = 0.0
+    DRIVE_KD = 0.02
 
 

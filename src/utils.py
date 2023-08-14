@@ -61,15 +61,16 @@ def getMask(image, lower: np.array, upper: np.array):
 
 # Returns the bounding-box of the biggest contour in the given mask
 def findContour(mask, setArea=1000, name='something'):
-    x, y, w, h = 0, 0, 0, 0
+    x, y, w, h, retArea = 0, 0, 0, 0, 0
     mask = cv2.GaussianBlur(mask, (3, 3), 0)
-    image, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour) 
         if area >= setArea:
+            retArea = area
             x, y, w, h = cv2.boundingRect(contour)
             if name != '':
                 print(f'~~~\nFound {name}!\nX: {x}, Y: {y}, W: {w}, H: {h}, Area: {area}\n~~~')
             break
     
-    return x, y, w, h
+    return x, y, w, h, retArea

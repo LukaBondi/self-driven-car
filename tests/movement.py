@@ -17,7 +17,7 @@ pwm.start(100)
 try:
     timeS = time.time()
     while(time.time() - timeS < 3):
-        servo.angle = 132
+        servo.angle = 92
         GPIO.output(in1, GPIO.LOW)
         GPIO.output(in2, GPIO.HIGH)
 

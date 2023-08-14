@@ -5,7 +5,7 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 pigpio_factory = PiGPIOFactory()
 
-def motorController():
+class motorController():
     def __init__(self, in1=19, in2=16, en=13, freq=1000):
         GPIO.setup(in1, GPIO.OUT) # In 1
         GPIO.setup(in2, GPIO.OUT) # In 2
@@ -35,7 +35,7 @@ def motorController():
 
         self.pwm.ChangeDutyCycle(speed)
         
-def servoController():
+class servoController():
     def __init__(self, port=7, minAngle=0, maxAngle=180, min_pulse_width=0.0005, max_pulse_width=0.0025):
 
         self.servo =AngularServo(port, min_angle=minAngle, max_angle=maxAngle, min_pulse_width=min_pulse_width, 

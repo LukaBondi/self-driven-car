@@ -29,7 +29,7 @@ class lidar(object):
         time.sleep(1)
 
         self.running = True
-        self.dist_data = np.zeros(210, dtype='int16')
+        self.dist_data = np.array([120]*210, dtype='int16')
         self.max_dist = maxDist # Default max distance
 
 
@@ -40,7 +40,7 @@ class lidar(object):
                 if not self.running:
                     break
 
-                data_buffer = np.zeros(210, dtype='int16')
+                data_buffer = np.array([120]*210, dtype='int16')
                 for (_, angle, distance) in scan:
                     # Floor the angle, set the limit to 359 then convert it pi radians
                     angle = min([359, floor(angle)]) 
@@ -63,7 +63,7 @@ class lidar(object):
         except RPLidarException as error:
             print(f"Error: {error}")
             self.lidar.stop_motor()
-            self.dist_data = np.zeros(210, dtype='int16')
+            self.dist_data = np.array([120]*210, dtype='int16')
 
 
     # Returns distance data -> angle range: [75, 285]

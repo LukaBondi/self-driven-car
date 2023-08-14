@@ -22,20 +22,26 @@ class config():
     # Steering servo #
     STEERING_GPIO = 7
     STEERING_LEFT = 50
-    STEERING_MIDDLE = 95
+    STEERING_MIDDLE = 83
     STEERING_RIGHT = 130
 
     # Camera servo #
-    STEERING_GPIO = 8
-    STEERING_LEFT = 0
-    STEERING_MIDLEFT = 45
-    STEERING_MIDDLE = 82
-    STEERING_MIDRIGHT = 130
-    STEERING_RIGHT = 170
+    CAM_SERVO_GPIO = 8
+    CAM_SERVO_LEFT = 0
+    CAM_SERVO_MIDLEFT = 45
+    CAM_SERVO_MIDDLE = 82
+    CAM_SERVO_MIDRIGHT = 130
+    CAM_SERVO_RIGHT = 170
 
 # ~~~~~ CAMERA CONFIGURATION ~~~~~ #
 
     CAMERA_PORT = 0
+
+    ORANGE_LOWER_BOUND = [0, 0, 0]
+    ORANGE_UPPER_BOUND = [179, 255, 255]
+    BLUE_LOWER_BOUND = [0, 0, 0]
+    BLUE_UPPER_BOUND = [179, 255, 255]
+
     RED_LOWER_BOUND = [0, 0, 0]
     RED_UPPER_BOUND = [179, 255, 255]
     GREEN_LOWER_BOUND = [0, 0, 0]
@@ -44,8 +50,8 @@ class config():
 
 # ~~~~~ PID CONFIGURATION ~~~~~ #
 
-    DRIVE_KP = 1
+    DRIVE_KP = 0.4
     DRIVE_KI = 0
-    DRIVE_KD = 0
+    DRIVE_KD = 0.0
 
 

@@ -6,4 +6,3 @@ RPi.GPIO
 pigpio
 
 smbus2
-Adafruit_CircuitPython_RPLIDAR

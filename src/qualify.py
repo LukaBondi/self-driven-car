@@ -29,7 +29,7 @@ cam = camera(flip=True)
 camThread = threading.Thread(target=cam.update, daemon=True)
 camThread.start()
 
-pid = ut.PIDController(cfg.DRIVE_KP, cfg.DRIVE_KI, cfg.DRIVE_KD, tolerance=10)
+pid = ut.PIDController(cfg.MIDDLE_KP, cfg.MIDDLE_KI, cfg.MIDDLE_KD, tolerance=10)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(cfg.BUTTON_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -43,7 +43,7 @@ try:
     while GPIO.input(cfg.BUTTON_GPIO):
         ut.drive(0, cfg.STEERING_MIDDLE, 1) 
 
-    time.sleep(0.5)
+    time.sleep(0.1)
     while (True):
         image = cam.get()
         image = image[180:] # Crop out details
@@ -61,7 +61,8 @@ try:
 
         cv2.imwrite("/home/pi/self-driven-car/src/test.jpg", image)
         # cv2.imwrite("/home/pi/self-driven-car/src/maskOr.jpg", maskOR)
-        # cv2.imwrite("/home/pi/self-driven-car/src/maskBl.jpg", maskBL)
+        # cv2.imwrite("/home/pi/self-drive
+        # n-car/src/maskBl.jpg", maskBL)
 
         # ~~~~~~~~~~~~ #
         
@@ -83,7 +84,7 @@ try:
 
             error = rightDist - leftDist
             error = round(pid.compute(error, 0), 2)
-            turn_value = ut.clamp(error, -15, 15)
+            turn_value = ut.clamp(error, -20, 20)
 
             ut.drive(40, cfg.STEERING_MIDDLE + turn_value, 1)
 
@@ -102,7 +103,7 @@ try:
     turnCount = 0
     timeS = time.time()
     countdown = time.time()
-    while(time.time() - countdown < 1.3):
+    while(time.time() - countdown < 1.8):
         if turnCount < 12:
             countdown = time.time()
             if not turnState:
@@ -118,12 +119,13 @@ try:
                     print(turnCount)
                     timeS = time.time()
 
-            elif turnState and time.time() - timeS > 2:
+            elif turnState and time.time() - timeS > 2.5:
                 turnState = False
 
-        rightDist = ut.clamp(rightUS.get(), 5, 80)
+        rightDist = ut.clamp(rightUS.get(), 5, 100)
         middleDist = ut.clamp(middleUS.get(), 5, 500)
-        leftDist = ut.clamp(leftUS.get(), 5, 80)
+        leftDist = ut.clamp(leftUS.get(), 5, 100)
+        # print(middleUS.get())
 
         error = rightDist - leftDist
         error = round(pid.compute(error, 0), 2)
@@ -141,8 +143,8 @@ try:
         else:
             ut.drive(0, cfg.STEERING_MIDDLE + turn_value, 1)
 
-        # print('{} | {} | {}'.format(rightDist, middleDist, leftDist))
-        #time.sleep(0.02)
+        # # print('{} | {} | {}'.format(rightDist, middleDist, leftDist))
+        # # time.sleep(0.02)
 
     ut.drive(0, cfg.STEERING_MIDDLE, 1)
     time.sleep(0.5)

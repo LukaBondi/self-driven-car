@@ -2,8 +2,8 @@ class config():
 
 # ~~~~~ GPIO CONFIGURATION ~~~~~ #
 
-    SWITCH_GPIO = 25
-    BUTTON_GPIO = 11
+    WIRE_GPIO = 2
+    BUTTON_GPIO = 25
 
     # Motors #
     IN1 = 19
@@ -27,31 +27,39 @@ class config():
 
     # Camera servo #
     CAM_SERVO_GPIO = 8
-    CAM_SERVO_LEFT = 0
-    CAM_SERVO_MIDLEFT = 45
+    CAM_SERVO_LEFT = 170
+    CAM_SERVO_MIDLEFT = 130
     CAM_SERVO_MIDDLE = 82
-    CAM_SERVO_MIDRIGHT = 130
-    CAM_SERVO_RIGHT = 170
+    CAM_SERVO_MIDRIGHT = 45
+    CAM_SERVO_RIGHT = 0
 
 # ~~~~~ CAMERA CONFIGURATION ~~~~~ #
 
     CAMERA_PORT = 0
 
-    ORANGE_LOWER_BOUND = [0, 12, 38]
-    ORANGE_UPPER_BOUND = [15, 142, 130]
-    BLUE_LOWER_BOUND = [85, 71, 4]
-    BLUE_UPPER_BOUND = [105, 233, 150]
+    ORANGE_LOWER_BOUND = [4, 91, 69]
+    ORANGE_UPPER_BOUND = [15, 182, 160]
 
-    RED_LOWER_BOUND = [0, 0, 0]
-    RED_UPPER_BOUND = [179, 255, 255]
-    GREEN_LOWER_BOUND = [0, 0, 0]
-    GREEN_UPPER_BOUND = [179, 255, 255]
+    BLUE_LOWER_BOUND = [96, 40, 43]
+    BLUE_UPPER_BOUND = [118, 227, 138]
 
+    RED_LOWER_BOUND_1 = [0, 146, 61]
+    RED_UPPER_BOUND_1 = [6, 243, 138]
+
+    RED_LOWER_BOUND_2 = [165, 101, 43]
+    RED_UPPER_BOUND_2 = [179, 239, 166]
+
+    GREEN_LOWER_BOUND = [54, 101, 49]
+    GREEN_UPPER_BOUND = [79, 233, 162]
 
 # ~~~~~ PID CONFIGURATION ~~~~~ #
 
-    DRIVE_KP = 0.15
-    DRIVE_KI = 0
-    DRIVE_KD = 0.02
+    MIDDLE_KP = 0.1
+    MIDDLE_KI = 0
+    MIDDLE_KD = 0.02
+    
+    BLOCK_KP = 0.35
+    BLOCK_KI = 0
+    BLOCK_KD = 0.1
 
 

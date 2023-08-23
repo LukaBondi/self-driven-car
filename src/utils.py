@@ -1,5 +1,6 @@
 from parts.actuator import motorController, servoController
 import numpy as np
+import time
 import cv2
 
 from config import config
@@ -15,15 +16,22 @@ def drive(speed: int = 0, angle: int = 90, direction: int = 0):
     motor.setSpeed(speed)
     steering.setAngle(angle)
 
+def driveTimer(timeMe, args=[0, cfg.STEERING_MIDDLE, 1]):
+    timeS = time.time()
+    while time.time() - timeS < timeMe:
+        drive(*args)
+        time.sleep(0.01)
+
 # Basic PID class
 class PIDController:
     def __init__(self, Kp, Ki, Kd, tolerance=1):
         self.Kp = Kp
         self.Ki = Ki
         self.Kd = Kd
-        self.tolerance = 1
+        self.tolerance = tolerance
         self.prev_error = 0
         self.integral = 0
+        self.atSP = False
 
     def compute(self, current_value, setpoint):
         error = current_value - setpoint
@@ -34,13 +42,15 @@ class PIDController:
 
         self.prev_error = error
 
+        if abs(error) < self.tolerance:
+            self.atSP = True
+        else: 
+            self.atSP = False
+            
         return output
 
     def atSetPoint(self):
-        if abs(self.prev_error) < self.tolerance:
-            return True
-        else:
-            return False
+        return self.atSP
 
 # Returns the value after clamping (Adapted from std::clamp in C++)
 def clamp(value, minVal, maxVal):
@@ -57,12 +67,13 @@ def getLidarAvg(arr: np.array) -> float:
 # Returns the mask of the given image with the given color bounds
 def getMask(image, lower: np.array, upper: np.array):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    return cv2.inRange(hsv, lower, upper)
+    mask = cv2.inRange(hsv, lower, upper)
+    mask = cv2.GaussianBlur(mask, (5, 5), 0)
+    return mask
 
 # Returns the bounding-box of the biggest contour in the given mask
 def findContour(mask, setArea=1000, name='something'):
     x, y, w, h, retArea = 0, 0, 0, 0, 0
-    mask = cv2.GaussianBlur(mask, (3, 3), 0)
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour) 

@@ -9,6 +9,6 @@ while True:
     #print(_)
     if _:
         print("Saved!")
-        cv2.imwrite("/home/pi/self-driven-car/tmp-files/image.jpg", frame)
+        cv2.imwrite("/home/pi/self-driven-car/tmp-files/test.jpg", frame)
         break
 vs.release()
